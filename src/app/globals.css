@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Both schemes are supported, so let the OS preference pick. Pinning this to
+   `dark` is what previously made light mode unreachable. */
+html {
+  color-scheme: light dark;
+}
+
+/* Status transitions get a small spring so a record turning green reads as an
+   event rather than a repaint. */
+@keyframes dk-pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.dk-pop {
+  animation: dk-pop 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dk-slide-in {
+  from {
+    transform: translateX(1rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.dk-slide-in {
+  animation: dk-slide-in 220ms ease-out;
+}
+
+@keyframes dk-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* The sweep is a dark wash on a light surface and a light wash on a dark one,
+   so the shimmer stays visible in both schemes. */
+.dk-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.04) 40%,
+    rgba(0, 0, 0, 0.07) 60%,
+    rgba(0, 0, 0, 0)
+  );
+  animation: dk-shimmer 1.6s infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dk-shimmer::after {
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0.05) 40%,
+      rgba(255, 255, 255, 0.08) 60%,
+      rgba(255, 255, 255, 0)
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dk-pop,
+  .dk-slide-in,
+  .dk-shimmer::after {
+    animation: none;
+  }
+}
