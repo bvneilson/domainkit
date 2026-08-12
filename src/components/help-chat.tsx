@@ -80,16 +80,18 @@ export function HelpChat({ domainId, domainName }: { domainId: string; domainNam
 
   return (
     <>
-      {/* A floating launcher needs an opaque background, so this is the solid
-          `white` colour (which is zinc-800 in dark mode) rather than `outline`. */}
-      <Button
-        color="white"
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-30 shadow-lg"
-      >
-        <MessageCircleQuestion className="size-4" aria-hidden />
-        Get help
-      </Button>
+      {!open && (
+        <div className="fixed bottom-6 right-6 z-30">
+          <Button
+            color="white"
+            onClick={() => setOpen(true)}
+            className="shadow-lg"
+          >
+            <MessageCircleQuestion className="size-4" aria-hidden />
+            Get help
+          </Button>
+        </div>
+      )}
 
       {open && (
         <div className="fixed inset-0 z-40 flex justify-end">
